@@ -6,7 +6,7 @@
     "build": "tsc",
     "start": "yarn build && node lib/index.js"
   },
-  "type": "commonjs",
+  "type": "module",
   "repository": "git@github.com:aneuhold/web-watcher.git",
   "keywords": [
     "Node.js"
@@ -17,7 +17,9 @@
     "url": "https://github.com/aneuhold/web-watcher/issues"
   },
   "homepage": "https://github.com/aneuhold/web-watcher",
-  "dependencies": {},
+  "dependencies": {
+    "node-fetch": "^3.2.0"
+  },
   "devDependencies": {
     "@types/node": "^16.10.2",
     "@typescript-eslint/eslint-plugin": "^4.32.0",

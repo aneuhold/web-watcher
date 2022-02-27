@@ -1,6 +1,6 @@
 {
   "env": {
-    "browser": true,
+    "browser": false,
     "es2021": true
   },
   "extends": [
@@ -36,7 +36,9 @@
     ],
     // Base rule needs to be disabled as it can report incorrect errors
     "no-shadow": "off",
-    "@typescript-eslint/no-shadow": ["error"]
+    "@typescript-eslint/no-shadow": [
+      "error"
+    ]
   },
   "settings": {
     "import/resolver": {
