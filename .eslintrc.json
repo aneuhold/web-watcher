@@ -31,6 +31,10 @@
     ],
     // Disabling no emtpy function because it seems to be needed for using yargs
     "no-empty-function": "off",
+    // Turned off so that "private" can be used in a constructor by itself
+    "no-useless-constructor": "off",
+    // Turned off so that typescript can infer return types when they are complex
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-empty-function": [
       "off"
     ],
