@@ -11,7 +11,7 @@ async function testFunction() {
 }
 
 async function sendEmail() {
-  const emailTransporter = await nodemailer.createTransport({
+  const emailTransporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
     auth: {
