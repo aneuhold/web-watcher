@@ -38,6 +38,8 @@
     "@typescript-eslint/no-empty-function": [
       "off"
     ],
+    // Off because this application requires awaiting in loops as a core mechanic
+    "no-await-in-loop": "off",
     // Base rule needs to be disabled as it can report incorrect errors
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": [

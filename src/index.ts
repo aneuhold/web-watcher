@@ -1,31 +1,29 @@
 import dotenv from 'dotenv';
-import nodemailer from 'nodemailer';
-import WebPage from './utils/WebPage';
+import fetch from 'node-fetch';
+import delay from './utils/delay';
 
 dotenv.config();
 
-async function testFunction() {
-  const google = new WebPage('https://google.com');
-  await google.init();
-  console.log(google.querySelectorAll('div').length);
+async function watch() {
+  const upsApiUrl = 'https://www.ups.com/track/api/Track/GetStatus?loc=en_US';
+  const upsFetchPayload = {
+    Locale: 'en_US',
+    TrackingNumber: ['1z2a37w90307710533'],
+    Requester: '/trackdetails',
+    returnToValue: '',
+  };
+
+  console.log();
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    const response = await fetch(upsApiUrl, {
+      method: 'POST',
+      body: JSON.stringify(upsFetchPayload),
+    });
+    console.log(response);
+
+    await delay(20);
+  }
 }
 
-async function sendEmail() {
-  const emailTransporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    auth: {
-      user: process.env.emailUsername,
-      pass: process.env.emailPassword,
-    },
-  });
-  const emailInfo = await emailTransporter.sendMail({
-    to: 'agneuhold@gmail.com',
-    subject: 'This is a test',
-    text: 'This is the test body',
-  });
-  console.log(emailInfo);
-}
-
-testFunction();
-sendEmail();
+watch();
