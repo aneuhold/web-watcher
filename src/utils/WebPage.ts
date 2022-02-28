@@ -1,7 +1,8 @@
 import cheerio, { CheerioAPI } from 'cheerio';
-import { access, mkdir, writeFile } from 'fs/promises';
+import { access, appendFile, mkdir, writeFile } from 'fs/promises';
 import fetch from 'node-fetch';
 import puppeteer, { Browser, Page, WaitForOptions } from 'puppeteer';
+import delay from './delay';
 
 async function prepDebugFolder() {
   try {
@@ -11,6 +12,9 @@ async function prepDebugFolder() {
   }
 }
 
+/**
+ * Represents a web page on the internet that can be scraped for data.
+ */
 export default class WebPage {
   private cheerioSelector?: CheerioAPI;
 
@@ -68,10 +72,21 @@ export default class WebPage {
     }
     if (!this.puppeteerPage) {
       this.puppeteerPage = await this.puppeteerBrowser.newPage();
+      this.puppeteerPage.on('console', async (message) => {
+        await appendFile('debug/console.txt', `${message.text()}\n`);
+      });
+      this.puppeteerPage.on('requestfailed', (request) => {
+        console.log(
+          `url: ${request.url()}, errText: ${
+            request.failure()?.errorText
+          }, method: ${request.method()}`
+        );
+      });
       await this.puppeteerPage.goto(this.siteUrl, loadOptions);
     } else {
       await this.puppeteerPage.reload(loadOptions);
     }
+    delay(2);
     await this.puppeteerPage.screenshot({ path: 'debug/screenshot.png' });
     return this.puppeteerPage.content();
   }
