@@ -16,3 +16,6 @@ localData/
 
 ### Secrets ###
 .env
+
+# Debug data
+debug

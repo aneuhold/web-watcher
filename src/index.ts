@@ -1,26 +1,19 @@
 import dotenv from 'dotenv';
-import fetch from 'node-fetch';
 import delay from './utils/delay';
+import WebPage from './utils/WebPage';
 
 dotenv.config();
 
 async function watch() {
-  const upsApiUrl = 'https://www.ups.com/track/api/Track/GetStatus?loc=en_US';
-  const upsFetchPayload = {
-    Locale: 'en_US',
-    TrackingNumber: ['1z2a37w90307710533'],
-    Requester: '/trackdetails',
-    returnToValue: '',
-  };
+  const upsWebPage = new WebPage(
+    'https://www.ups.com/track?loc=en_US&tracknum=1Z2A37W90307710533&src=&requester=/trackdetails',
+    true
+  );
 
-  console.log();
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const response = await fetch(upsApiUrl, {
-      method: 'POST',
-      body: JSON.stringify(upsFetchPayload),
-    });
-    console.log(response);
+    await upsWebPage.refresh();
+    console.log(upsWebPage.querySelectorAll('track-details-estimation'));
 
     await delay(20);
   }
